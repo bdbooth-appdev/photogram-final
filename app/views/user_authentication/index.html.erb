@@ -3,20 +3,24 @@
 <table border="1">
     <tr>
       <th>
-        ID
+        Username
       </th>
       <th>
-        Username
+        Private?
       </th>
       <th></th>
     </tr>
     <% @users.each do |user| %>
       <tr>
         <td>
-          <%= user.id %>
+          <%= user.username %>
         </td>
         <td>
-          <%= user.username %>
+          <%if user.private == true %>
+            Yes
+          <%else%>
+            No
+          <%end%>
         </td>
         <td>
           <a href="/users/<%= user.username %>">Show details</a>
@@ -28,10 +32,10 @@
   <table border="1">
     <tr>
       <th>
-        ID
+        Username
       </th>
       <th>
-        Username
+        Private?
       </th>
       <th></th>
       <th></th>
@@ -39,10 +43,14 @@
     <% @users.each do |user| %>
       <tr>
         <td>
-          <%= user.id %>
+          <%= user.username %>
         </td>
         <td>
-          <%= user.username %>
+          <%if user.private == true %>
+            Yes
+          <%else%>
+            No
+          <%end%>
         </td>
         <td>
           Follow - UPDATE

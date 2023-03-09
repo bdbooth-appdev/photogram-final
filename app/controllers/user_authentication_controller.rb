@@ -4,12 +4,24 @@ class UserAuthenticationController < ApplicationController
 
   def index
     @users = User.all.order({ :username => :asc })
+    @signed_in_user = session.fetch(:user_id)
     render({ :template => "user_authentication/index.html.erb"})
   end
 
   def show
     the_username = params.fetch("the_username")
     @user = User.where({ :username => the_username }).at(0)
+    @signed_in_user = session.fetch(:user_id)
+
+    all_follow_requests = FollowRequest.where({:recipient_id => @user.id, :status => "TRUE"})
+    @follower_count = all_follow_requests.count
+
+    all_following_requests = FollowRequest.where({:sender_id => @user.id, :status => "TRUE"})
+    @following_count = all_following_requests.count
+
+    @matching_follow_requests = FollowRequest.where({ :recipient_id => @user.id, :sender_id => @signed_in_user, :status => "TRUE"})
+    @the_follow_request = @matching_follow_requests.at(0)
+
     render({ :template => "user_authentication/show.html.erb" })
   end
 

@@ -12,4 +12,10 @@
 #  owner_id       :integer
 #
 class Photo < ApplicationRecord
+
+  has_many(:comments)
+  has_many(:likes)
+
+  mount_uploader :image, ImageUploader
+
 end

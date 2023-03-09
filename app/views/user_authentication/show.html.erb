@@ -1,25 +1,40 @@
 <h1><%= @user.username %></h1>
+
+<% if @user.id == @signed_in_user%>
+<% elsif @the_follow_request == nil %>
+  <form action="/insert_follow_request" method="post">
+    <input type="hidden" id="query_recipient_id" name="query_recipient_id" value="<%= @user.id%>">
+    <input type="hidden" id="query_sender_id" name="query_sender_id" value="<%=@signed_in_user%>">
+    <input type="hidden" id="query_status" name="query_status" value="TRUE">
+    <button> Follow </button>
+  </form>
+<% else %>
+  <a href="/delete_follow_request/<%= @the_follow_request.id %>"> Unfollow </a>
+<%end%>
+
 <dl>
   <dt>Private</dt>
   <dd><%= @user.private %></dd>
   <dt>Followers</dt>
-  <dd> (temp placeholder!!!) </dd>
+  <dd> <%= @follower_count %> </dd>
   <p> </p>
   <dt> <b> Pending follow requests </b> </dt>
   <p> </p>
   <dt>Following</dt>
-  <dd> (temp placeholder!!!) </dd>
-  <dt>Edit user</dt>
-  <dd>
-    <form action="/update_user/<%= @user.id %>" >
-      <label for="browser_username">Username</label>
-      <input id="browser_username" type="text" name="input_username" placeholder="Enter a username..." value="<%= @user.username %>">
-      <label for="private_account">Private?</label>
-      <input id="private_account" name="private_account" type="checkbox"
-      value="1" /><input name="private_account" type="hidden" value="0" />
-      <button>Update user</button>
-    </form>
-  </dd>
+  <dd> <%= @following_count %> </dd>
+  <% if @user.id == @signed_in_user%>
+    <dt>Edit user</dt>
+    <dd>
+      <form action="/update_user/<%= @user.id %>" >
+        <label for="browser_username">Username</label>
+        <input id="browser_username" type="text" name="input_username" placeholder="Enter a username..." value="<%= @user.username %>">
+        <label for="private_account">Private?</label>
+        <input id="private_account" name="private_account" type="checkbox"
+        value="1" /><input name="private_account" type="hidden" value="0" />
+        <button>Update user</button>
+      </form>
+    </dd>
+  <%end%>
 </dl>
  <ul>
       <li>

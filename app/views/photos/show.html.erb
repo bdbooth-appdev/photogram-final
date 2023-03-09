@@ -4,6 +4,12 @@
       Photo #<%= @the_photo.id %> details
     </h1>
 
+  <% if session.fetch(:user_id) == @the_photo.owner_id %>
+    <a href="/delete_photo/<%= @the_photo.id %>">
+      Delete photo
+    </a>
+  <%end%>
+
     <div>
       <div>
         <a href="/photos">
@@ -13,7 +19,7 @@
 
       <div>
         <a href="/delete_photo/<%= @the_photo.id %>">
-          Delete photo
+          Delete this photo
         </a>
       </div>
     </div>
@@ -23,7 +29,7 @@
         Image
       </dt>
       <dd>
-        <%= @the_photo.image %>
+        <img src="<%= @the_photo.image %>" class="img-responsive">
       </dd>
 
       <dt>
@@ -51,7 +57,7 @@
         Owner
       </dt>
       <dd>
-        <%= @the_photo.owner_id %>
+        <%= User.where({:id => @the_photo.owner_id}).at(0).username %>
       </dd>
 
       <dt>
