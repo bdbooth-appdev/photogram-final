@@ -1,0 +1,56 @@
+<h1>List of users</h1>
+<% if session.fetch(:user_id) == nil %>
+<table border="1">
+    <tr>
+      <th>
+        ID
+      </th>
+      <th>
+        Username
+      </th>
+      <th></th>
+    </tr>
+    <% @users.each do |user| %>
+      <tr>
+        <td>
+          <%= user.id %>
+        </td>
+        <td>
+          <%= user.username %>
+        </td>
+        <td>
+          <a href="/users/<%= user.username %>">Show details</a>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <table border="1">
+    <tr>
+      <th>
+        ID
+      </th>
+      <th>
+        Username
+      </th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% @users.each do |user| %>
+      <tr>
+        <td>
+          <%= user.id %>
+        </td>
+        <td>
+          <%= user.username %>
+        </td>
+        <td>
+          Follow - UPDATE
+        </td>
+        <td>
+          <a href="/users/<%= user.username %>">Show details</a>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

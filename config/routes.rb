@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   # Routes for the Like resource:
 
+  # HOME
+  get("/", { :controller => "user_authentication", :action => "index"})
+
+  # USERS
+  get("/users/:the_username", { :controller => "user_authentication", :action => "show"})
+
   # CREATE
   post("/insert_like", { :controller => "likes", :action => "create" })
           

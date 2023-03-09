@@ -1,0 +1,60 @@
+<h1><%= @user.username %></h1>
+<dl>
+  <dt>Private</dt>
+  <dd><%= @user.private %></dd>
+  <dt>Followers</dt>
+  <dd> (temp placeholder!!!) </dd>
+  <p> </p>
+  <dt> <b> Pending follow requests </b> </dt>
+  <p> </p>
+  <dt>Following</dt>
+  <dd> (temp placeholder!!!) </dd>
+  <dt>Edit user</dt>
+  <dd>
+    <form action="/update_user/<%= @user.id %>" >
+      <label for="browser_username">Username</label>
+      <input id="browser_username" type="text" name="input_username" placeholder="Enter a username..." value="<%= @user.username %>">
+      <label for="private_account">Private?</label>
+      <input id="private_account" name="private_account" type="checkbox"
+      value="1" /><input name="private_account" type="hidden" value="0" />
+      <button>Update user</button>
+    </form>
+  </dd>
+</dl>
+ <ul>
+      <li>
+        <a href="/users/<%= @user.username %>"> Profile </a>
+      </li>
+      <li>
+        <a href="/user_sign_in"> Liked Photos PLACEHOLDER!!!! </a>
+      </li>
+      <li>
+        <a href="/user_sign_out"> Feed PLACEHOLDER!!!!</a>
+      </li>
+      <li>
+        <a href="/photos"> Discover PLACEHOLDER!!!!</a>
+      </li>
+  </ul>
+<%# UNCOMMENT BOTTOM LINE LATER %>
+<h2> Own photos PLACEHOLDER! </h2>
+<%# <h2>Own photos (<%= @user.own_photos.count %>) <%#</h2> %>
+<table border="1">
+  <tr>
+    <th>
+      Image
+    </th>
+    <th>
+      Owner
+    </th>
+    <th>
+      Caption
+    </th>
+    <th>
+      Posted
+    </th>
+     <th>
+      Likes
+    </th>
+    <th></th>
+  </tr>
+</table>
