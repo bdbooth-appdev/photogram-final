@@ -12,12 +12,14 @@ class UserAuthenticationController < ApplicationController
     the_username = params.fetch("the_username")
     @user = User.where({ :username => the_username }).at(0)
     @signed_in_user = session.fetch(:user_id)
+    @users_photos = Photo.where({:owner_id => @user.id})
+    @user_pending_follow_requests = FollowRequest.where({:recipient_id => @user.id, :status => "Requested"})
 
-    all_follow_requests = FollowRequest.where({:recipient_id => @user.id, :status => "TRUE"})
-    @follower_count = all_follow_requests.count
+    all_follow_requests = FollowRequest.where({:recipient_id => @user.id, :status => "Following"})
+    @follower_count = all_follow_requests.size.to_s
 
-    all_following_requests = FollowRequest.where({:sender_id => @user.id, :status => "TRUE"})
-    @following_count = all_following_requests.count
+    all_following_requests = FollowRequest.where({:sender_id => @user.id, :status => "Following"})
+    @following_count = all_following_requests.size.to_s
 
     @matching_follow_requests = FollowRequest.where({ :recipient_id => @user.id, :sender_id => @signed_in_user, :status => "TRUE"})
     @the_follow_request = @matching_follow_requests.at(0)

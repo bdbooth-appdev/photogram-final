@@ -1,11 +1,18 @@
 <h1><%= @user.username %></h1>
 
 <% if @user.id == @signed_in_user%>
-<% elsif @the_follow_request == nil %>
+<% elsif @the_follow_request == nil && @user.private == true %>
   <form action="/insert_follow_request" method="post">
     <input type="hidden" id="query_recipient_id" name="query_recipient_id" value="<%= @user.id%>">
     <input type="hidden" id="query_sender_id" name="query_sender_id" value="<%=@signed_in_user%>">
-    <input type="hidden" id="query_status" name="query_status" value="TRUE">
+    <input type="hidden" id="query_status" name="query_status" value="Requested">
+    <button> Follow </button>
+  </form>
+<% elsif @the_follow_request == nil && @user.private == false %>
+  <form action="/insert_follow_request" method="post">
+    <input type="hidden" id="query_recipient_id" name="query_recipient_id" value="<%= @user.id%>">
+    <input type="hidden" id="query_sender_id" name="query_sender_id" value="<%=@signed_in_user%>">
+    <input type="hidden" id="query_status" name="query_status" value="Following">
     <button> Follow </button>
   </form>
 <% else %>
@@ -17,9 +24,29 @@
   <dd><%= @user.private %></dd>
   <dt>Followers</dt>
   <dd> <%= @follower_count %> </dd>
-  <p> </p>
-  <dt> <b> Pending follow requests </b> </dt>
-  <p> </p>
+
+  <% if @user_pending_follow_requests == nil %>
+  <% else %>
+    <% @user_pending_follow_requests.each do |request| %>
+      <ul>
+        <li>
+          <% request.sender_id %>
+        </li>
+        <form action="/modify_follow_request/<% request.id %>">
+          <input type="hidden" id="query_recipient_id" name="query_recipient_id" value="<%= @user.id%>">
+          <input type="hidden" id="query_sender_id" name="query_sender_id" value="<%=@signed_in_user%>">
+          <input type="hidden" id="query_status" name="query_status" value="Following">
+          <button> Accept </button>
+        </form>
+          <form action="/delete_follow_request/<% request.id %>">
+          <button> Reject </button>
+        </form>
+      </ul>
+    <% end %>
+    <%end%>
+
+
+
   <dt>Following</dt>
   <dd> <%= @following_count %> </dd>
   <% if @user.id == @signed_in_user%>
@@ -52,24 +79,46 @@
   </ul>
 <%# UNCOMMENT BOTTOM LINE LATER %>
 <h2> Own photos PLACEHOLDER! </h2>
-<%# <h2>Own photos (<%= @user.own_photos.count %>) <%#</h2> %>
+<%# <h2>Own photos (<%= @user.own_photos.count %> <%#</h2> %>
+
 <table border="1">
-  <tr>
-    <th>
-      Image
-    </th>
-    <th>
-      Owner
-    </th>
-    <th>
-      Caption
-    </th>
-    <th>
-      Posted
-    </th>
-     <th>
-      Likes
-    </th>
-    <th></th>
-  </tr>
-</table>
+      <tr>
+        <th>
+          Image
+        </th>
+        <th>
+          Owner
+        </th>
+        <th>
+          Caption
+        </th>
+        <th>
+          Posted
+        </th>
+        <th>
+          Likes
+        </th>
+        <th></th>
+      </tr>
+    <% @users_photos.each do |photo| %>
+      <tr>
+        <td>
+          <img src="<%= photo.image %>" class="img-responsive">
+        </td>
+        <td>
+          <%= User.where({:id => photo.owner_id}).at(0).username %>
+        </td>
+        <td>
+          <%= photo.caption %>
+        </td>
+        <td>
+          <%= photo.created_at %>
+        </td>
+        <td>
+          <%= photo.likes_count %>
+        </td>
+        <td>
+          <a href="/photos/<%= photo.id %>"> Show details </a>
+        </td>
+      </tr>
+    <% end %>

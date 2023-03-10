@@ -15,6 +15,7 @@ class Photo < ApplicationRecord
 
   has_many(:comments)
   has_many(:likes)
+  belongs_to(:users)
 
   mount_uploader :image, ImageUploader
 
